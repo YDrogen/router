@@ -228,20 +228,34 @@ export type BaseRouteOptions<
       // If thrown during a navigation, the navigation will be cancelled and the error will be passed to the `onError` function.
       // If thrown during a preload event, the error will be logged to the console.
       {
-        beforeLoad?: BeforeLoadFn<
-          TParentRoute,
-          TAllParams,
-          NoInfer<TLoaderContext>,
-          TRouteContext
-        >
+        beforeLoad?:
+          | BeforeLoadFn<
+              TParentRoute,
+              TAllParams,
+              NoInfer<TLoaderContext>,
+              TRouteContext
+            >
+          | BeforeLoadFn<
+              TParentRoute,
+              TAllParams,
+              NoInfer<TLoaderContext>,
+              TRouteContext
+            >[]
       }
     : {
-        beforeLoad: BeforeLoadFn<
-          TParentRoute,
-          TAllParams,
-          NoInfer<TLoaderContext>,
-          TRouteContext
-        >
+        beforeLoad:
+          | BeforeLoadFn<
+              TParentRoute,
+              TAllParams,
+              NoInfer<TLoaderContext>,
+              TRouteContext
+            >
+          | BeforeLoadFn<
+              TParentRoute,
+              TAllParams,
+              NoInfer<TLoaderContext>,
+              TRouteContext
+            >[]
       }) & {
     loader?: LoaderFn<
       TLoader,

@@ -1031,16 +1031,26 @@ export class Router<
           parentMatch?.context ?? this?.options.context ?? {}
 
         try {
-          const beforeLoadContext =
-            (await route.options.beforeLoad?.({
-              abortController: match.abortController,
-              params: match.params,
-              preload: !!opts?.preload,
-              context: {
-                ...parentContext,
-                ...match.loaderContext,
-              },
-            })) ?? ({} as any)
+          let beforeLoadContext: any = {}
+
+          const beforeLoadFns = Array.isArray(route.options.beforeLoad)
+            ? route.options.beforeLoad
+            : [route.options.beforeLoad]
+
+          for (let i = 0; i < beforeLoadFns.length; i++) {
+            beforeLoadContext = {
+              ...beforeLoadContext,
+              ...((await beforeLoadFns[i]?.({
+                abortController: match.abortController,
+                params: match.params,
+                preload: !!opts?.preload,
+                context: {
+                  ...parentContext,
+                  ...match.loaderContext,
+                },
+              })) ?? ({} as any)),
+            }
+          }
 
           const context = {
             ...parentContext,
